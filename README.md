@@ -12,7 +12,8 @@ Property business, like any other business, globally have grown organically from
 **Our Market Niche**
 
 We have carefully carved our niche in Sub-Saharan Africa, to pilot particularly from Nigeria, Africa's most populous nation, major cities like Abuja, Kano and Lagos-Nigeria, where there is a massive urban migration and a huge Housing deficit. 
-According to the World Bank Group's Acting VP for Africa, "_Stocktaking of the Housing Sector in Sub-Saharan Africa, projects that Africa could have as many as 1.2 billion urban dwellers by 2050 and 4.5 million new residents in informal settlements each year, most of whom cannot afford basic formal housing or access mortgage loans. Governments will need to join hands with the private sector to facilitate investments in housing by expanding access to and improving the quality of existing stock, while at the same time making it easier for people to access land and housing finance_" . 1 
+According to the World Bank Group's Acting VP for Africa, "_Stocktaking of the Housing Sector in Sub-Saharan Africa, projects that Africa could have as many as 1.2 billion urban dwellers by 2050 and 4.5 million new residents in informal settlements each year, most of whom cannot afford basic formal housing or access mortgage loans. Governments will need to join hands with the private sector to facilitate investments in housing by expanding access to and improving the quality of existing stock, while at the same time making it easier for people to access land and housing finance_" . 1
+
 **Who is BipsNet for?**
 
 BipsNet is for individuals desiring to rent, own or sell a property, mortgage institutions, Housing authorities, estate developers and agents, tax authorities.
