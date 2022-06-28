@@ -9,6 +9,10 @@ use std::collections::HashMap;
 #[cfg(test)]
 mod apptests;
 
+#[cfg(test)]
+#[allow(unused_imports)]
+use crate::apptests::{testproperty, testuser};
+
 
 // adding user and property modules to the scope
 mod user;
