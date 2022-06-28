@@ -1,0 +1,19 @@
+{
+  "name": "bipsnet",
+  "version": "1.0.0",
+  "description": "A Blockchain based digital platform where participants link up their business processes to instantly make transactions directly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fqt/BipsNet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fqt/BipsNet/issues"
+  },
+  "homepage": "https://github.com/fqt/BipsNet#readme"
+}
