@@ -1,5 +1,5 @@
 #[allow(unused_imports)]
-use near_sdk::{borsh::{self, BorshSerialize, BorshDeserialize}};
+use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 
 #[allow(unused_imports)]
 use near_sdk::env;
@@ -21,19 +21,19 @@ pub type AccountId = String;
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct User {
-	full_name: String,
-	wallet_id: AccountId,
-	usertype: String,
-	organization: String,
+    full_name: String,
+    wallet_id: AccountId,
+    usertype: String,
+    organization: String,
 }
 
 impl User {
-	pub fn new(full_name: String, usertype: String, organization: String) -> Self {
-		User {
-			full_name,
-			wallet_id: env::signer_account_id().to_string(),
-			usertype,
-			organization,
-		}
-	}
+    pub fn new(full_name: String, usertype: String, organization: String) -> Self {
+        User {
+            full_name,
+            wallet_id: env::signer_account_id().to_string(),
+            usertype,
+            organization,
+        }
+    }
 }
