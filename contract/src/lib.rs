@@ -12,20 +12,21 @@ use std::collections::HashMap;
 #[cfg(test)]
 mod apptests;
 
-#[cfg(test)]
 #[allow(unused_imports)]
+#[cfg(test)]
 use crate::apptests::{testproperty, testuser};
 
 // adding user and property modules to the scope
+mod mortgage;
 mod property;
 mod user;
 
 // importing the user & property module
-#[allow(unused_imports)]
-use crate::user::user::User;
-
+use crate::mortgage::mortgage::ApprovalInPrinciple;
 #[allow(unused_imports)]
 use crate::property::property::Property;
+#[allow(unused_imports)]
+use crate::user::user::User;
 
 pub type AccountId = String;
 
@@ -35,6 +36,7 @@ pub struct Contract {
     owner: AccountId,
     users: HashMap<String, User>,
     properties: HashMap<String, Property>,
+    approval_in_principles: HashMap<String, ApprovalInPrinciple>,
 }
 
 #[near_bindgen]
@@ -42,11 +44,13 @@ impl Contract {
     pub fn new(owner: AccountId) -> Self {
         let users: HashMap<String, User> = HashMap::new();
         let properties: HashMap<String, Property> = HashMap::new();
+        let approval_in_principles: HashMap<String, ApprovalInPrinciple> = HashMap::new();
 
         Contract {
             owner,
             users,
             properties,
+            approval_in_principles,
         }
     }
 

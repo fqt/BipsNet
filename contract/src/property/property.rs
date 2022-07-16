@@ -1,7 +1,10 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::env;
+use near_sdk::near_bindgen;
 use near_sdk::serde::Deserialize;
 use near_sdk::serde::Serialize;
+
+// use crate::{Contract, ContractExt};
 
 pub type AccountId = String;
 
@@ -11,7 +14,7 @@ pub type AccountId = String;
 pub struct Property {
     record_id: String,
     owners_full_name: String,
-    agents_account_id: AccountId,
+    owners_account_id: AccountId,
     property_address: String,
     property_description: String,
     improvements: String,
@@ -31,6 +34,10 @@ pub struct Property {
     due_dilligence: bool,
     exchange: bool,
     completion: bool,
+    /*
+    preferred_mortgage_institution: String,
+    preferred_buyers_lawyer: String,
+    preferred_sellers_lawyer: String, */
 }
 
 impl Property {
@@ -51,10 +58,11 @@ impl Property {
         image4: String,
         image5: String,
         image6: String,
+        // participants for the property
     ) -> Self {
         Property {
             record_id,
-            agents_account_id: env::signer_account_id().to_string(),
+            owners_account_id: env::signer_account_id().to_string(),
             owners_full_name,
             property_address,
             property_description,

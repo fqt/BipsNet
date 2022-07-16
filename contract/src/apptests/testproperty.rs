@@ -33,5 +33,6 @@ pub fn new_property() {
         "image5".to_string(),
         "image6".to_string(),
     );
+    println!("{:?}", contract.properties);
     assert_eq!(contract.count_properties(), 1);
 }
