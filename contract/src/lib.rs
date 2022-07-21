@@ -1,9 +1,11 @@
 // Importing tools from the near sdk library that we'll use
+use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 #[allow(unused_imports)]
 use near_sdk::collections::UnorderedMap;
 use near_sdk::env;
 #[allow(unused_imports)]
 use near_sdk::near_bindgen;
+use near_sdk::serde::{Deserialize, Serialize};
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
 
@@ -14,43 +16,57 @@ mod apptests;
 
 #[allow(unused_imports)]
 #[cfg(test)]
-use crate::apptests::{testproperty, testuser};
+use crate::apptests::{test_mortgage, testproperty, testuser};
 
 // adding user and property modules to the scope
+mod estate_agent;
 mod mortgage;
 mod property;
 mod user;
 
 // importing the user & property module
+use crate::estate_agent::estate_agent::{
+    FormalOffer, MemorandumOfSalesAgreement, RealEstateAgentProposedTransaction,
+};
 use crate::mortgage::mortgage::ApprovalInPrinciple;
-#[allow(unused_imports)]
 use crate::property::property::Property;
-#[allow(unused_imports)]
 use crate::user::user::User;
 
 pub type AccountId = String;
 
 #[near_bindgen]
-#[allow(dead_code)]
+#[derive(BorshSerialize, BorshDeserialize, Default, Serialize, Deserialize)]
 pub struct Contract {
     owner: AccountId,
     users: HashMap<String, User>,
     properties: HashMap<String, Property>,
     approval_in_principles: HashMap<String, ApprovalInPrinciple>,
+    real_estate_proposed_transactions: HashMap<String, RealEstateAgentProposedTransaction>,
+    formal_offers: HashMap<String, FormalOffer>,
+    memorandum_of_sales_agreements: HashMap<String, MemorandumOfSalesAgreement>,
 }
 
 #[near_bindgen]
 impl Contract {
+    #[init]
     pub fn new(owner: AccountId) -> Self {
         let users: HashMap<String, User> = HashMap::new();
         let properties: HashMap<String, Property> = HashMap::new();
         let approval_in_principles: HashMap<String, ApprovalInPrinciple> = HashMap::new();
+        let real_estate_proposed_transactions: HashMap<String, RealEstateAgentProposedTransaction> =
+            HashMap::new();
+        let formal_offers: HashMap<String, FormalOffer> = HashMap::new();
+        let memorandum_of_sales_agreements: HashMap<String, MemorandumOfSalesAgreement> =
+            HashMap::new();
 
         Contract {
             owner,
             users,
             properties,
             approval_in_principles,
+            real_estate_proposed_transactions,
+            formal_offers,
+            memorandum_of_sales_agreements,
         }
     }
 
@@ -137,3 +153,7 @@ impl Contract {
         *properties
     }
 }
+
+// property_address: String, property_description: String,improvements: String,asking_price_from_seller: u128,energy_certificate: String,floor_plan: String,gas_certificate: String,environmental_assesment: String,image1: String,image2: String,image3: String,image4: String,image5: String,image6: String,
+
+// near call realestate.felabs.testnet register_new_property '{"owners_full_name": "Felix", "property_address": "Kisumu", "property_description": "lorem ipsum dolor sit amet consectetur ", "improvements": "none","asking_price_from_seller": 1800,"energy_certificate": "Strig","floor_plan": "String","gas_certificate": "String","environmental_assesment": "String","image1": "String","image2": "String","image3": "String","image4": "String","image5": "String","image6": "String"}' --accountId felabs1.testnet

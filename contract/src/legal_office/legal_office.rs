@@ -53,5 +53,6 @@ impl Contract {
         date_of_completion: String,
         standard_conditions_of_sales: String,
     ) {
+        // happens after the property has been tokenized
     }
 }

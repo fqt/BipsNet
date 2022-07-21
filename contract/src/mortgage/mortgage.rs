@@ -13,7 +13,7 @@ pub type AccountId = String;
 #[serde(crate = "near_sdk::serde")]
 pub struct ApprovalInPrinciple {
     record_id_for_property: String,
-    buyers_full_name: String,
+    buyers_full_name: AccountId,
     approved_aip_amount: u128,
     expiry_date: String,
     ea_note: String,
@@ -22,14 +22,13 @@ pub struct ApprovalInPrinciple {
 impl ApprovalInPrinciple {
     pub fn new(
         record_id_for_property: String,
-        buyers_full_name: String,
         approved_aip_amount: u128,
         expiry_date: String,
         ea_note: String,
     ) -> Self {
         ApprovalInPrinciple {
             record_id_for_property,
-            buyers_full_name,
+            buyers_full_name: env::signer_account_id().to_string(),
             approved_aip_amount,
             expiry_date,
             ea_note,
@@ -49,7 +48,6 @@ impl Contract {
     pub fn issue_an_approval_in_principle(
         &mut self,
         record_id_for_property: String,
-        buyers_full_name: String,
         approved_aip_amount: u128,
         expiry_date: String,
         ea_note: String,
@@ -65,7 +63,6 @@ impl Contract {
                     record_id_for_property.to_string(),
                     ApprovalInPrinciple::new(
                         record_id_for_property,
-                        buyers_full_name,
                         approved_aip_amount,
                         expiry_date,
                         ea_note,

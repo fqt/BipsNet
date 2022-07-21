@@ -16,6 +16,8 @@ use near_sdk::serde::Deserialize;
 #[allow(unused_imports)]
 use near_sdk::collections::UnorderedMap;
 
+use crate::{Contract, ContractExt};
+
 pub type AccountId = String;
 
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
@@ -35,5 +37,25 @@ impl User {
             usertype,
             organization,
         }
+    }
+}
+
+#[near_bindgen]
+impl Contract {
+    pub fn update_current_user(
+        &mut self,
+        full_name: String,
+        usertype: String,
+        organization: String,
+    ) {
+        self.users.insert(
+            env::signer_account_id().to_string(),
+            User::new(
+                full_name.to_string(),
+                usertype.to_string(),
+                organization.to_string(),
+            ),
+        );
+        env::log_str("You have updated your current user_details successfully");
     }
 }
