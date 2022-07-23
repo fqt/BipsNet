@@ -12,7 +12,7 @@ pub type AccountId = String;
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct ApprovalInPrinciple {
-    record_id_for_property: String,
+    record_id_for_property: u8,
     buyers_full_name: AccountId,
     approved_aip_amount: u128,
     expiry_date: String,
@@ -21,7 +21,7 @@ pub struct ApprovalInPrinciple {
 
 impl ApprovalInPrinciple {
     pub fn new(
-        record_id_for_property: String,
+        record_id_for_property: u8,
         approved_aip_amount: u128,
         expiry_date: String,
         ea_note: String,
@@ -47,7 +47,7 @@ impl Contract {
     * */
     pub fn issue_an_approval_in_principle(
         &mut self,
-        record_id_for_property: String,
+        record_id_for_property: u8,
         approved_aip_amount: u128,
         expiry_date: String,
         ea_note: String,
@@ -60,7 +60,7 @@ impl Contract {
                 env::log_str("approval in principle allready created for this property")
             } else {
                 self.approval_in_principles.insert(
-                    record_id_for_property.to_string(),
+                    record_id_for_property,
                     ApprovalInPrinciple::new(
                         record_id_for_property,
                         approved_aip_amount,

@@ -3,13 +3,15 @@ use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 #[allow(unused_imports)]
 use near_sdk::collections::UnorderedMap;
 use near_sdk::env;
+use near_sdk::json_types::{Base58PublicKey, U128};
 #[allow(unused_imports)]
 use near_sdk::near_bindgen;
 use near_sdk::serde::{Deserialize, Serialize};
-use rand::distributions::Alphanumeric;
-use rand::{thread_rng, Rng};
 
 use std::collections::HashMap;
+
+const ONE_NEAR: u128 = 1_000_000_000_000_000_000_000_000;
+const PROB: u8 = 128;
 
 #[cfg(test)]
 mod apptests;
@@ -39,11 +41,11 @@ pub type AccountId = String;
 pub struct Contract {
     owner: AccountId,
     users: HashMap<String, User>,
-    properties: HashMap<String, Property>,
-    approval_in_principles: HashMap<String, ApprovalInPrinciple>,
-    real_estate_proposed_transactions: HashMap<String, RealEstateAgentProposedTransaction>,
-    formal_offers: HashMap<String, FormalOffer>,
-    memorandum_of_sales_agreements: HashMap<String, MemorandumOfSalesAgreement>,
+    properties: HashMap<u8, Property>,
+    approval_in_principles: HashMap<u8, ApprovalInPrinciple>,
+    real_estate_proposed_transactions: HashMap<u8, RealEstateAgentProposedTransaction>,
+    formal_offers: HashMap<u8, FormalOffer>,
+    memorandum_of_sales_agreements: HashMap<u8, MemorandumOfSalesAgreement>,
 }
 
 #[near_bindgen]
@@ -51,12 +53,12 @@ impl Contract {
     #[init]
     pub fn new(owner: AccountId) -> Self {
         let users: HashMap<String, User> = HashMap::new();
-        let properties: HashMap<String, Property> = HashMap::new();
-        let approval_in_principles: HashMap<String, ApprovalInPrinciple> = HashMap::new();
-        let real_estate_proposed_transactions: HashMap<String, RealEstateAgentProposedTransaction> =
+        let properties: HashMap<u8, Property> = HashMap::new();
+        let approval_in_principles: HashMap<u8, ApprovalInPrinciple> = HashMap::new();
+        let real_estate_proposed_transactions: HashMap<u8, RealEstateAgentProposedTransaction> =
             HashMap::new();
-        let formal_offers: HashMap<String, FormalOffer> = HashMap::new();
-        let memorandum_of_sales_agreements: HashMap<String, MemorandumOfSalesAgreement> =
+        let formal_offers: HashMap<u8, FormalOffer> = HashMap::new();
+        let memorandum_of_sales_agreements: HashMap<u8, MemorandumOfSalesAgreement> =
             HashMap::new();
 
         Contract {
@@ -107,20 +109,16 @@ impl Contract {
         image5: String,
         image6: String,
     ) {
-        let rand_string: String = thread_rng()
-            .sample_iter(&Alphanumeric)
-            .take(15)
-            .map(char::from)
-            .collect();
-        match &self.properties.get(&rand_string) {
+        let rand: u8 = *env::random_seed().get(0).unwrap();
+        match &self.properties.get(&rand) {
             Some(_) => {
                 env::log_str("Hash Clash try again");
             }
             None => {
                 self.properties.insert(
-                    rand_string.to_string(),
+                    rand,
                     Property::new(
-                        rand_string.to_string(),
+                        rand,
                         owners_full_name.to_string(),
                         property_address.to_string(),
                         property_description.to_string(),
@@ -143,7 +141,7 @@ impl Contract {
         }
     }
 
-    pub fn get_all_properties(&self) -> &HashMap<String, Property> {
+    pub fn get_all_properties(&self) -> &HashMap<u8, Property> {
         let properties = &self.properties;
         properties
     }

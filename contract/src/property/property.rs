@@ -11,7 +11,7 @@ pub type AccountId = String;
 #[serde(crate = "near_sdk::serde")]
 // files stored in arweave
 pub struct Property {
-    record_id: String,
+    record_id: u8,
     owners_full_name: String,
     owners_account_id: AccountId,
     property_address: String,
@@ -41,7 +41,7 @@ pub struct Property {
 
 impl Property {
     pub fn new(
-        record_id: String,
+        record_id: u8,
         owners_full_name: String,
         property_address: String,
         property_description: String,

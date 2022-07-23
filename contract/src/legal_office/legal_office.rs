@@ -2,7 +2,7 @@
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct DraftOfSalesAgreement {
-    record_id_for_property: String,
+    record_id_for_property: u8,
     sellers_name: String,
     buyers_name: String,
     property_address: String,
@@ -15,7 +15,7 @@ pub struct DraftOfSalesAgreement {
 
 impl DraftOfSalesAgreement {
     pub fn new(
-        record_id_for_property: String,
+        record_id_for_property: u8,
         sellers_name: String,
         buyers_name: String,
         property_address: String,
@@ -43,7 +43,7 @@ impl DraftOfSalesAgreement {
 impl Contract {
     pub fn create_draft_of_sales_agreement(
         &mut self,
-        record_id_for_property: String,
+        record_id_for_property: u8,
         sellers_name: String,
         buyers_name: String,
         property_address: String,

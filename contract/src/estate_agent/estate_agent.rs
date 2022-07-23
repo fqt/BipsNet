@@ -10,7 +10,7 @@ use near_sdk::serde::{Deserialize, Serialize};
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct MemorandumOfSalesAgreement {
-    record_id_for_property: String,
+    record_id_for_property: u8,
     buyers_name: String,
     sellers_name: String,
     sellers_lawyer_name: String,
@@ -31,7 +31,7 @@ pub struct MemorandumOfSalesAgreement {
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct RealEstateAgentProposedTransaction {
-    record_id_for_property: String,
+    record_id_for_property: u8,
     /* participants */
     sellers_lawyer: String, // AccountId of the sellers lawyer
     buyers_lawyer: String,
@@ -47,7 +47,7 @@ pub struct RealEstateAgentProposedTransaction {
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct FormalOffer {
-    record_id_for_property: String,
+    record_id_for_property: u8,
     buyers_full_name: String,
     sellers_full_name: String,
     sellers_address: String,  // address of the sellers
@@ -56,7 +56,7 @@ pub struct FormalOffer {
 
 impl MemorandumOfSalesAgreement {
     pub fn new(
-        record_id_for_property: String,
+        record_id_for_property: u8,
         buyers_name: String,
         sellers_name: String,
         sellers_lawyer_name: String,
@@ -78,7 +78,7 @@ impl MemorandumOfSalesAgreement {
 
 impl FormalOffer {
     pub fn new(
-        record_id_for_property: String,
+        record_id_for_property: u8,
         buyers_full_name: String,
         sellers_full_name: String,
         sellers_address: String,
@@ -96,7 +96,7 @@ impl FormalOffer {
 
 impl RealEstateAgentProposedTransaction {
     pub fn new(
-        record_id_for_property: String,
+        record_id_for_property: u8,
         sellers_lawyer: String,
         buyers_lawyer: String,
         bank: String,
@@ -124,7 +124,7 @@ impl RealEstateAgentProposedTransaction {
 impl Contract {
     pub fn select_proposed_transaction_participants(
         &mut self,
-        record_id_for_property: String,
+        record_id_for_property: u8,
         sellers_lawyer: String,
         buyers_lawyer: String,
         bank: String,
@@ -138,9 +138,9 @@ impl Contract {
         match properties.get(&record_id_for_property) {
             Some(_property) => {
                 self.real_estate_proposed_transactions.insert(
-                    record_id_for_property.to_string(),
+                    record_id_for_property,
                     RealEstateAgentProposedTransaction::new(
-                        record_id_for_property.to_string(),
+                        record_id_for_property,
                         sellers_lawyer.to_string(),
                         buyers_lawyer.to_string(),
                         bank.to_string(),
@@ -161,7 +161,7 @@ impl Contract {
 
     pub fn create_formal_offer(
         &mut self,
-        record_id_for_property: String,
+        record_id_for_property: u8,
         buyers_full_name: String,
         sellers_full_name: String,
         sellers_address: String,
@@ -171,9 +171,9 @@ impl Contract {
         match proposed_transaction_participants.get(&record_id_for_property) {
             Some(_property) => {
                 self.formal_offers.insert(
-                    record_id_for_property.to_string(),
+                    record_id_for_property,
                     FormalOffer::new(
-                        record_id_for_property.to_string(),
+                        record_id_for_property,
                         buyers_full_name.to_string(),
                         sellers_full_name.to_string(),
                         sellers_address.to_string(),
@@ -190,7 +190,7 @@ impl Contract {
 
     pub fn create_memorandum_of_sales_agreement(
         &mut self,
-        record_id_for_property: String,
+        record_id_for_property: u8,
         buyers_name: String,
         sellers_name: String,
         sellers_lawyer_name: String,
@@ -202,9 +202,9 @@ impl Contract {
         match formal_offers.get(&record_id_for_property) {
             Some(_formal_offer) => {
                 self.memorandum_of_sales_agreements.insert(
-                    record_id_for_property.to_string(),
+                    record_id_for_property,
                     MemorandumOfSalesAgreement::new(
-                        record_id_for_property.to_string(),
+                        record_id_for_property,
                         buyers_name.to_string(),
                         sellers_name.to_string(),
                         sellers_lawyer_name.to_string(),
