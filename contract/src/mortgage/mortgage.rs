@@ -12,8 +12,8 @@ pub type AccountId = String;
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct ApprovalInPrinciple {
-    record_id_for_property: u8,
-    buyers_full_name: AccountId,
+    record_id_for_property: String,
+    official_full_name: AccountId,
     approved_aip_amount: u128,
     expiry_date: String,
     ea_note: String,
@@ -21,14 +21,14 @@ pub struct ApprovalInPrinciple {
 
 impl ApprovalInPrinciple {
     pub fn new(
-        record_id_for_property: u8,
+        record_id_for_property: String,
         approved_aip_amount: u128,
         expiry_date: String,
         ea_note: String,
     ) -> Self {
         ApprovalInPrinciple {
             record_id_for_property,
-            buyers_full_name: env::signer_account_id().to_string(),
+            official_full_name: env::signer_account_id().to_string(),
             approved_aip_amount,
             expiry_date,
             ea_note,
@@ -47,32 +47,38 @@ impl Contract {
     * */
     pub fn issue_an_approval_in_principle(
         &mut self,
-        record_id_for_property: u8,
+        record_id_for_property: String,
         approved_aip_amount: u128,
         expiry_date: String,
         ea_note: String,
     ) {
-        let properties = &self.properties;
-        let approval_in_principles = &self.approval_in_principles;
-
-        if properties.contains_key(&record_id_for_property) {
-            if approval_in_principles.contains_key(&record_id_for_property) {
-                env::log_str("approval in principle allready created for this property")
-            } else {
-                self.approval_in_principles.insert(
-                    record_id_for_property,
-                    ApprovalInPrinciple::new(
-                        record_id_for_property,
-                        approved_aip_amount,
-                        expiry_date,
-                        ea_note,
-                    ),
-                );
+        match self.properties.get_mut(&record_id_for_property) {
+            Some(property) => {
+                let formal_offers = &mut property.formal_offers;
+                formal_offers.into_iter().for_each(|formal_offer| {
+                    if formal_offer.record_id_for_property == record_id_for_property {
+                        if formal_offer.type_of_mortgage == "AIP" {
+                            match self.users.get_mut(&formal_offer.buyers_full_name) {
+                                Some(user) => {
+                                    user.approval_in_principles.push(ApprovalInPrinciple::new(
+                                        record_id_for_property.to_string(),
+                                        approved_aip_amount,
+                                        expiry_date.to_string(),
+                                        ea_note.to_string(),
+                                    ));
+                                    env::log_str("approval in principle successful")
+                                }
+                                None => {
+                                    env::log_str("buyer not in formal offer");
+                                }
+                            }
+                        }
+                    }
+                })
             }
-
-            env::log_str("approval in principle creation successful");
-        } else {
-            env::log_str("property identification not found");
+            None => {
+                env::log_str("no property found with that id");
+            }
         }
     }
 }

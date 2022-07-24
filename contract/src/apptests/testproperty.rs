@@ -17,22 +17,43 @@ pub fn new_property() {
 
     let mut contract = Contract::new(felix.to_string());
     contract.register_new_property(
+        "iuudfgjsdhtYjjsdvy".to_string(),
         "Felix Awere".to_string(),
-        "Kisumu".to_string(),
-        "lorem ipsum dolor sit amet consectetur, ivano".to_string(),
-        "Plenning to recolor the sailing".to_string(),
-        1000,
-        "path_to_energy_certificate".to_string(),
-        "floor_plan".to_string(),
-        "path_to_gas_certificate".to_string(),
-        "path_to_environmental_assesment".to_string(),
+        "kisuumu".to_string(),
+        "lorem ipsum dolor sit".to_string(),
+        "none for now".to_string(),
+        1200,
         "image1".to_string(),
         "image2".to_string(),
         "image3".to_string(),
         "image4".to_string(),
         "image5".to_string(),
         "image6".to_string(),
+        vec![
+            "bathroom".to_string(),
+            "sauna".to_string(),
+            "balcony".to_string(),
+        ],
+    );
+    contract.register_new_property(
+        "jiskdjfhksdkhfk".to_string(),
+        "Felix Awere".to_string(),
+        "kisuumu".to_string(),
+        "lorem ipsum dolor sit".to_string(),
+        "none for now".to_string(),
+        1200,
+        "image1".to_string(),
+        "image2".to_string(),
+        "image3".to_string(),
+        "image4".to_string(),
+        "image5".to_string(),
+        "image6".to_string(),
+        vec![
+            "b3athroom".to_string(),
+            "sauna".to_string(),
+            "balcony".to_string(),
+        ],
     );
     println!("{:?}", contract.properties);
-    assert_eq!(contract.count_properties(), 1);
+    assert_eq!(contract.count_properties(), 2);
 }

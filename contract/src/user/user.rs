@@ -16,6 +16,8 @@ use near_sdk::serde::Deserialize;
 #[allow(unused_imports)]
 use near_sdk::collections::UnorderedMap;
 
+use crate::mortgage::mortgage::ApprovalInPrinciple;
+
 use crate::{Contract, ContractExt};
 
 pub type AccountId = String;
@@ -27,15 +29,24 @@ pub struct User {
     wallet_id: AccountId,
     usertype: String,
     organization: String,
+    phone_number: String,
+    pub approval_in_principles: Vec<ApprovalInPrinciple>,
 }
 
 impl User {
-    pub fn new(full_name: String, usertype: String, organization: String) -> Self {
+    pub fn new(
+        full_name: String,
+        usertype: String,
+        organization: String,
+        phone_number: String,
+    ) -> Self {
         User {
             full_name,
             wallet_id: env::signer_account_id().to_string(),
             usertype,
             organization,
+            phone_number,
+            approval_in_principles: vec![],
         }
     }
 }
@@ -47,6 +58,7 @@ impl Contract {
         full_name: String,
         usertype: String,
         organization: String,
+        phone_number: String,
     ) {
         self.users.insert(
             env::signer_account_id().to_string(),
@@ -54,6 +66,7 @@ impl Contract {
                 full_name.to_string(),
                 usertype.to_string(),
                 organization.to_string(),
+                phone_number.to_string(),
             ),
         );
         env::log_str("You have updated your current user_details successfully");

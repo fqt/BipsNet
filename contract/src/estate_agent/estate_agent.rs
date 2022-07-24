@@ -10,7 +10,7 @@ use near_sdk::serde::{Deserialize, Serialize};
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct MemorandumOfSalesAgreement {
-    record_id_for_property: u8,
+    record_id_for_property: String,
     buyers_name: String,
     sellers_name: String,
     sellers_lawyer_name: String,
@@ -31,32 +31,28 @@ pub struct MemorandumOfSalesAgreement {
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct RealEstateAgentProposedTransaction {
-    record_id_for_property: u8,
+    record_id_for_property: String,
     /* participants */
     sellers_lawyer: String, // AccountId of the sellers lawyer
     buyers_lawyer: String,
     bank: String,
-    tax_office: String,
-    preferred_registry_officer: String,
     preferred_surveyer: String,
-    preferred_settlement_organization: String,
-    preferred_insurance_firm_for_property: String,
 }
 
 // done by the estate agent...
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct FormalOffer {
-    record_id_for_property: u8,
-    buyers_full_name: String,
+    pub record_id_for_property: String,
+    pub buyers_full_name: String,
     sellers_full_name: String,
-    sellers_address: String,  // address of the sellers
-    type_of_mortgage: String, // AIP of full payment
+    sellers_address: String,      // address of the sellers
+    pub type_of_mortgage: String, // AIP of full payment
 }
 
 impl MemorandumOfSalesAgreement {
     pub fn new(
-        record_id_for_property: u8,
+        record_id_for_property: String,
         buyers_name: String,
         sellers_name: String,
         sellers_lawyer_name: String,
@@ -78,7 +74,7 @@ impl MemorandumOfSalesAgreement {
 
 impl FormalOffer {
     pub fn new(
-        record_id_for_property: u8,
+        record_id_for_property: String,
         buyers_full_name: String,
         sellers_full_name: String,
         sellers_address: String,
@@ -96,26 +92,18 @@ impl FormalOffer {
 
 impl RealEstateAgentProposedTransaction {
     pub fn new(
-        record_id_for_property: u8,
+        record_id_for_property: String,
         sellers_lawyer: String,
         buyers_lawyer: String,
         bank: String,
-        tax_office: String,
-        preferred_registry_officer: String,
         preferred_surveyer: String,
-        preferred_settlement_organization: String,
-        preferred_insurance_firm_for_property: String, // used to verify if the property is insured and if not we shall then start checking the liabilities
     ) -> Self {
         RealEstateAgentProposedTransaction {
             record_id_for_property,
             sellers_lawyer,
             buyers_lawyer,
             bank,
-            tax_office,
-            preferred_registry_officer,
             preferred_surveyer,
-            preferred_settlement_organization,
-            preferred_insurance_firm_for_property,
         }
     }
 }
@@ -124,73 +112,54 @@ impl RealEstateAgentProposedTransaction {
 impl Contract {
     pub fn select_proposed_transaction_participants(
         &mut self,
-        record_id_for_property: u8,
+        record_id_for_property: String,
         sellers_lawyer: String,
         buyers_lawyer: String,
         bank: String,
-        tax_office: String,
-        preferred_registry_officer: String,
         preferred_surveyer: String,
-        preferred_settlement_organization: String,
-        preferred_insurance_firm_for_property: String,
     ) {
-        let properties = &self.properties;
-        match properties.get(&record_id_for_property) {
-            Some(_property) => {
-                self.real_estate_proposed_transactions.insert(
-                    record_id_for_property,
-                    RealEstateAgentProposedTransaction::new(
-                        record_id_for_property,
-                        sellers_lawyer.to_string(),
-                        buyers_lawyer.to_string(),
-                        bank.to_string(),
-                        tax_office.to_string(),
-                        preferred_registry_officer.to_string(),
-                        preferred_surveyer.to_string(),
-                        preferred_settlement_organization.to_string(),
-                        preferred_insurance_firm_for_property.to_string(),
-                    ),
-                );
-                env::log_str("participants for the property have been updated successfully");
+        match self.properties.get_mut(&record_id_for_property) {
+            Some(property) => {
+                property.preferred_buyers_lawyer = buyers_lawyer.to_string();
+                property.preferred_sellers_lawyer = sellers_lawyer.to_string();
+                property.preferred_surveyer = preferred_surveyer.to_string();
+                property.preferred_mortgage_institution = bank.to_string();
+                property.prepare = true;
+                env::log_str("preferred users updated Successfully");
             }
             None => {
-                env::log_str("property id not found");
+                env::log_str("property not found");
             }
         }
     }
 
     pub fn create_formal_offer(
         &mut self,
-        record_id_for_property: u8,
+        record_id_for_property: String,
         buyers_full_name: String,
         sellers_full_name: String,
         sellers_address: String,
         type_of_mortgage: String,
     ) {
-        let proposed_transaction_participants = &self.real_estate_proposed_transactions;
-        match proposed_transaction_participants.get(&record_id_for_property) {
-            Some(_property) => {
-                self.formal_offers.insert(
-                    record_id_for_property,
-                    FormalOffer::new(
-                        record_id_for_property,
-                        buyers_full_name.to_string(),
-                        sellers_full_name.to_string(),
-                        sellers_address.to_string(),
-                        type_of_mortgage.to_string(),
-                    ),
-                );
-                env::log_str("formal offer has been created successfully");
+        match self.properties.get_mut(&record_id_for_property) {
+            Some(property) => {
+                property.formal_offers.push(FormalOffer::new(
+                    record_id_for_property.to_string(),
+                    buyers_full_name.to_string(),
+                    sellers_full_name.to_string(),
+                    sellers_address.to_string(),
+                    type_of_mortgage.to_string(),
+                ));
+                property.offer = true;
+                env::log_str("formal offer created successfully");
             }
-            None => {
-                env::log_str("you havent selected the proposed participants for this transaction");
-            }
+            None => env::log_str("property not found"),
         }
     }
 
     pub fn create_memorandum_of_sales_agreement(
         &mut self,
-        record_id_for_property: u8,
+        record_id_for_property: String,
         buyers_name: String,
         sellers_name: String,
         sellers_lawyer_name: String,
@@ -198,25 +167,43 @@ impl Contract {
         additional_note: String,
         estimated_date_of_completion: String,
     ) {
-        let formal_offers = &self.formal_offers;
-        match formal_offers.get(&record_id_for_property) {
-            Some(_formal_offer) => {
-                self.memorandum_of_sales_agreements.insert(
-                    record_id_for_property,
-                    MemorandumOfSalesAgreement::new(
-                        record_id_for_property,
+        match self.properties.get_mut(&record_id_for_property) {
+            Some(property) => {
+                property
+                    .memorandum_of_sales_agreements
+                    .push(MemorandumOfSalesAgreement::new(
+                        record_id_for_property.to_string(),
                         buyers_name.to_string(),
                         sellers_name.to_string(),
                         sellers_lawyer_name.to_string(),
                         buyers_offer_price,
                         additional_note.to_string(),
                         estimated_date_of_completion.to_string(),
-                    ),
-                );
-                env::log_str("memorandum of sales agreement has been created successfully");
+                    ));
+                env::log_str("memorandum_of_sales_agreements created successfully");
             }
             None => {
-                env::log_str("formal offer has not yet been created for the property");
+                env::log_str("property not found");
+            }
+        }
+    }
+
+    // any document supporting the validity of the property is uploaded in this stage
+    pub fn upload_valid_documents(&mut self, record_id_for_property: String, files: Vec<String>) {
+        let logged_in_user = env::signer_account_id();
+        match self.properties.get_mut(&record_id_for_property) {
+            Some(property) => {
+                if property.owners_account_id != logged_in_user.to_string() {
+                    env::log_str("you are not the owner");
+                } else {
+                    files.into_iter().for_each(|file| {
+                        property.uploaded_legal_documents.push(file.to_string());
+                    });
+                    env::log_str("documents uploaded sucessfully");
+                }
+            }
+            None => {
+                env::log_str("invalid property");
             }
         }
     }
