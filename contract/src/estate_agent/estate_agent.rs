@@ -33,10 +33,10 @@ pub struct MemorandumOfSalesAgreement {
 pub struct RealEstateAgentProposedTransaction {
     record_id_for_property: String,
     /* participants */
-    sellers_lawyer: String, // AccountId of the sellers lawyer
-    buyers_lawyer: String,
-    bank: String,
-    preferred_surveyer: String,
+    sellers_lawyer: String,     // AccountId of the sellers lawyer
+    buyers_lawyer: String,      // AccountId of the buyrs lawyer
+    bank: String,               // Account id of the bank
+    preferred_surveyer: String, // account id of the preferred surveyor
 }
 
 // done by the estate agent...

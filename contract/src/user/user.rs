@@ -25,11 +25,11 @@ pub type AccountId = String;
 #[derive(Clone, Serialize, Deserialize, BorshDeserialize, BorshSerialize, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct User {
-    full_name: String,
-    wallet_id: AccountId,
-    usertype: String,
-    organization: String,
-    phone_number: String,
+    pub full_name: String,
+    pub wallet_id: AccountId,
+    pub usertype: String,
+    pub organization: String,
+    pub phone_number: String,
     pub approval_in_principles: Vec<ApprovalInPrinciple>,
 }
 
