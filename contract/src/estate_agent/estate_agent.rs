@@ -120,10 +120,10 @@ impl Contract {
     ) {
         match self.properties.get_mut(&record_id_for_property) {
             Some(property) => {
-                property.preferred_buyers_lawyer = buyers_lawyer.to_string();
-                property.preferred_sellers_lawyer = sellers_lawyer.to_string();
-                property.preferred_surveyer = preferred_surveyer.to_string();
-                property.preferred_mortgage_institution = bank.to_string();
+                property.preferred_buyers_lawyer = buyers_lawyer;
+                property.preferred_sellers_lawyer = sellers_lawyer;
+                property.preferred_surveyer = preferred_surveyer;
+                property.preferred_mortgage_institution = bank;
                 property.prepare = true;
                 env::log_str("preferred users updated Successfully");
             }
@@ -144,11 +144,11 @@ impl Contract {
         match self.properties.get_mut(&record_id_for_property) {
             Some(property) => {
                 property.formal_offers.push(FormalOffer::new(
-                    record_id_for_property.to_string(),
-                    buyers_full_name.to_string(),
-                    sellers_full_name.to_string(),
-                    sellers_address.to_string(),
-                    type_of_mortgage.to_string(),
+                    record_id_for_property,
+                    buyers_full_name,
+                    sellers_full_name,
+                    sellers_address,
+                    type_of_mortgage,
                 ));
                 property.offer = true;
                 env::log_str("formal offer created successfully");
@@ -172,13 +172,13 @@ impl Contract {
                 property
                     .memorandum_of_sales_agreements
                     .push(MemorandumOfSalesAgreement::new(
-                        record_id_for_property.to_string(),
-                        buyers_name.to_string(),
-                        sellers_name.to_string(),
-                        sellers_lawyer_name.to_string(),
+                        record_id_for_property,
+                        buyers_name,
+                        sellers_name,
+                        sellers_lawyer_name,
                         buyers_offer_price,
-                        additional_note.to_string(),
-                        estimated_date_of_completion.to_string(),
+                        additional_note,
+                        estimated_date_of_completion,
                     ));
                 env::log_str("memorandum_of_sales_agreements created successfully");
             }
@@ -197,7 +197,7 @@ impl Contract {
                     env::log_str("you are not the owner");
                 } else {
                     files.into_iter().for_each(|file| {
-                        property.uploaded_legal_documents.push(file.to_string());
+                        property.uploaded_legal_documents.push(file);
                     });
                     env::log_str("documents uploaded sucessfully");
                 }
