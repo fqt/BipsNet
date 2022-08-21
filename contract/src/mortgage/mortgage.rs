@@ -55,22 +55,22 @@ impl Contract {
         match self.properties.get_mut(&record_id_for_property) {
             Some(property) => {
                 let formal_offers = &mut property.formal_offers;
-                formal_offers.into_iter().for_each(|formal_offer| {
-                    if formal_offer.record_id_for_property == record_id_for_property {
-                        if formal_offer.type_of_mortgage == "AIP" {
-                            match self.users.get_mut(&formal_offer.buyers_full_name) {
-                                Some(user) => {
-                                    user.approval_in_principles.push(ApprovalInPrinciple::new(
-                                        record_id_for_property.to_string(),
-                                        approved_aip_amount,
-                                        expiry_date.to_string(),
-                                        ea_note.to_string(),
-                                    ));
-                                    env::log_str("approval in principle successful")
-                                }
-                                None => {
-                                    env::log_str("buyer not in formal offer");
-                                }
+                formal_offers.iter_mut().for_each(|formal_offer| {
+                    if formal_offer.record_id_for_property == record_id_for_property
+                        && formal_offer.type_of_mortgage == "AIP"
+                    {
+                        match self.users.get_mut(&formal_offer.buyers_full_name) {
+                            Some(user) => {
+                                user.approval_in_principles.push(ApprovalInPrinciple::new(
+                                    record_id_for_property.to_string(),
+                                    approved_aip_amount,
+                                    expiry_date.to_string(),
+                                    ea_note.to_string(),
+                                ));
+                                env::log_str("approval in principle successful")
+                            }
+                            None => {
+                                env::log_str("buyer not in formal offer");
                             }
                         }
                     }

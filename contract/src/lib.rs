@@ -97,18 +97,18 @@ impl Contract {
                 self.properties.insert(
                     record_id.to_string(),
                     Property::new(
-                        record_id.to_string(),
-                        owners_full_name.to_string(),
-                        property_address.to_string(),
-                        property_description.to_string(),
-                        improvements.to_string(),
+                        record_id,
+                        owners_full_name,
+                        property_address,
+                        property_description,
+                        improvements,
                         asking_price_from_seller,
-                        image1.to_string(),
-                        image2.to_string(),
-                        image3.to_string(),
-                        image4.to_string(),
-                        image5.to_string(),
-                        image6.to_string(),
+                        image1,
+                        image2,
+                        image3,
+                        image4,
+                        image5,
+                        image6,
                         other_property_attributes,
                     ),
                 );
@@ -118,8 +118,7 @@ impl Contract {
     }
 
     pub fn get_all_properties(&self) -> &HashMap<String, Property> {
-        let properties = &self.properties;
-        properties
+        &self.properties
     }
 
     pub fn show_interest_in_the_property(&mut self, property_id: String) {
