@@ -4,6 +4,7 @@ Blockchain Based Instant Property Network
 **What is BipsNet?** 
 
 BipsNet is a digitally native property marketplace to be built on a blockchain-based platorm which enables all participants involved in property rental, buying and selling process to join up their business processes using smart contracts to instantly make transactions directly, thereby cutting transaction time, business process complexity, risk and cost of buying and selling property and property rental.
+Also a property listing on blockchain for revenue generation that satisfies customers and recognized by regulators. 
 
 **Why Us and Why we do it?** 
 
@@ -18,6 +19,7 @@ According to the World Bank Group's Acting VP for Africa, "_Stocktaking of the H
 
 BipsNet is for individuals desiring to rent, own or sell a property, mortgage institutions, Housing authorities, estate developers and agents, tax authorities.
 We hope to complete our first MVP iteration as soon as we can for proper testing to emphasize the potential of new blockchain-based system to ease and speed up property transactions.
+In addition, we 
 
 
 1. https://www.worldbank.org/en/news/press-release/2015/12/01/growing-african-cities-face-housing-challenge-and-opportunity
