@@ -18,13 +18,14 @@ pub mod apptests;
 
 #[allow(unused_imports)]
 #[cfg(test)]
-use crate::apptests::{test_mortgage, testproperty, testuser};
+use crate::apptests::{test_mortgage, testproperty, testuser,test_insuarance};
 
 // adding user and property modules to the scope
 pub mod estate_agent;
 pub mod mortgage;
 pub mod property;
 pub mod user;
+pub mod insurance_firm;
 
 // importing the user & property module
 #[allow(unused_imports)]
